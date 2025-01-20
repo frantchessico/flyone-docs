@@ -1,36 +1,185 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Flyone Library
 
-## Getting Started
+Flyone is a TypeScript-based library for interacting with the Flyone API, providing seamless integration and functionality for link management.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Create links
+- Update existing links
+- Delete links
+- Fetch all links or specific links by ID
+- Track clicks over time
+- Manage device-specific and country-specific targeting
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Install the library via npm or yarn:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+\`\`\`bash
+npm install flyone
+\`\`\`
 
-## Learn More
+or
 
-To learn more about Next.js, take a look at the following resources:
+\`\`\`bash
+yarn add flyone
+\`\`\`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Usage
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Importing the Library
 
-## Deploy on Vercel
+\`\`\`typescript
+import { Flyone } from "flyone";
+\`\`\`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Initializing the Flyone Instance
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+\`\`\`typescript
+const flyone = new Flyone({
+  apiKey: "SavanaPoint Your-API-Key-Here",
+  orgId: "Your-Organization-Id-Here",
+});
+\`\`\`
+
+### Examples
+
+#### Create a Short Link
+
+\`\`\`typescript
+const newLink = await flyone.createShortLink({
+  originalUrl: "https://example.com",
+  title: "My Example Link",
+});
+console.log("Created Link:", newLink);
+\`\`\`
+
+#### Fetch All Links
+
+\`\`\`typescript
+const links = await flyone.getAllLinks();
+console.log("All Links:", links);
+\`\`\`
+
+#### Get a Link by ID
+
+\`\`\`typescript
+const link = await flyone.getLinkById("link-id-here");
+console.log("Link Details:", link);
+\`\`\`
+
+#### Update a Short Link
+
+\`\`\`typescript
+const updatedLink = await flyone.updateShortLink("link-id-here", {
+  title: "Updated Title",
+});
+console.log("Updated Link:", updatedLink);
+\`\`\`
+
+#### Delete a Short Link
+
+\`\`\`typescript
+await flyone.deleteShortLink("link-id-here");
+console.log("Link deleted successfully.");
+\`\`\`
+
+#### Track Clicks Over Time
+
+\`\`\`typescript
+const clicks = await flyone.getClicksOverTime("link-id-here");
+console.log("Clicks Over Time:", clicks);
+\`\`\`
+
+#### Remove a Device Target
+
+\`\`\`typescript
+await flyone.removeDevice("link-id-here", "device-id-here");
+console.log("Device removed successfully.");
+\`\`\`
+
+#### Remove a Country Target
+
+\`\`\`typescript
+await flyone.removeCountry("link-id-here", "country-id-here");
+console.log("Country removed successfully.");
+\`\`\`
+
+## Error Handling
+
+Errors are handled using a centralized mechanism. In case of an error, the library will throw an exception with a descriptive message. Below are the possible error messages and their corresponding HTTP status codes:
+
+| Status Code | Message                               | Description                                      |
+|-------------|---------------------------------------|--------------------------------------------------|
+| 400         | Invalid request parameters           | The request payload is invalid.                 |
+| 401         | Unauthorized                         | The API key or organization ID is missing/invalid.|
+| 403         | Forbidden                            | You do not have permission to perform this action.|
+| 404         | Resource not found                   | The requested resource does not exist.          |
+| 500         | Internal server error                | An unexpected error occurred on the server.     |
+| 503         | Service unavailable                  | The service is temporarily unavailable.         |
+
+### Example Error Handling
+
+\`\`\`typescript
+try {
+  await flyone.createShortLink({
+    originalUrl: "https://example.com",
+    title: "My Example Link",
+  });
+} catch (error) {
+  console.error("Error creating link:", error.message);
+}
+\`\`\`
+
+## Configuration Options
+
+### FlyoneConfig
+
+| Property | Type   | Description                      |
+| -------- | ------ | -------------------------------- |
+| \`apiKey\` | string | Your API key for authentication. |
+| \`orgId\`  | string | The ID of your organization.     |
+
+## Development
+
+### Running Tests
+
+Tests are written using Jest. To run the tests, use:
+
+\`\`\`bash
+npm test
+\`\`\`
+
+or
+
+\`\`\`bash
+yarn test
+\`\`\`
+
+### Building the Library
+
+To build the library for production:
+
+\`\`\`bash
+npm run build
+\`\`\`
+
+or
+
+\`\`\`bash
+yarn build
+\`\`\`
+
+## Contributing
+
+Contributions are welcome! Please follow the guidelines below:
+
+1. Fork the repository.
+2. Create a new branch for your feature/fix.
+3. Commit your changes with clear commit messages.
+4. Submit a pull request.
+
+## License
+
+This library is licensed under the MIT License. See the LICENSE file for details.
+
