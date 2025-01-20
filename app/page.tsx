@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { CodeBlock } from "./components/code-block"
 import { TableOfContents } from "./components/table-of-contents"
+import { Footer } from "./components/footer"
 
 export const metadata: Metadata = {
   title: "Flyone Library Documentation",
@@ -243,6 +244,7 @@ try {
           </section>
         </main>
       </div>
+      <Footer />
     </div>
   )
 }
